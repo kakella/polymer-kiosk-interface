@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-usage-footer">
+  <template>
+
+    <style>
+      :host {
+        position: absolute;
+        top: 70vh;
+        height: 30vh;
+        width: 100vw;
+        padding: 3vh 0 2vh 0;
+      }
+      .flex-equal-around-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        /*@apply(--layout-around-justified);*/
+      }
+      dox-kiosk-control-button-horizontal {
+        padding: 0 2vw;
+      }
+    </style>
+
+    <div class="flex-equal-around-justified">
+      <dox-kiosk-control-button-horizontal primary-text="Billing" secondary-text="View billing history" inset-image="billing" highlight="{{billingHighlight}}" onclick="app.hideUsage=true; app.hideBilling=false; app.billingHighlight='disable'; app.usageHighlight='false';"></dox-kiosk-control-button-horizontal>
+      <dox-kiosk-control-button-horizontal primary-text="Usage" secondary-text="View usage history" inset-image="usage" highlight="{{usageHighlight}}" onclick="app.hideUsage=false; app.hideBilling=true; app.billingHighlight='false'; app.usageHighlight='disable';"></dox-kiosk-control-button-horizontal>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-usage-footer',
+
+        properties: {
+          billingHighlight: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+            value: 'disable'
+          },
+          usageHighlight: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+            value: 'false'
+          }
+        }
+      });
+    })();
+  </script>
+</dom-module>

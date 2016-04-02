@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<dom-module id="dox-kiosk-control-button-nav">
+  <template>
+    <style>
+      div {
+        height: 40px;
+        width: 200px;
+        background-color: #3d6098;
+        color: #e7e7e7;
+        line-height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 25px;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+
+      .home {
+        background-image: url("../../images/dox-kiosk-images/home.png");
+      }
+
+      .live-support {
+        background-image: url("../../images/dox-kiosk-images/livesupport5.png");
+      }
+
+      .logout {
+        background-image: url("../../images/dox-kiosk-images/logout.png");
+      }
+
+    </style>
+
+    <div style="cursor: pointer;" class$="{{buttonType}}"></div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-control-button-nav',
+
+        hostAttributes: {
+          'button-type': null
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

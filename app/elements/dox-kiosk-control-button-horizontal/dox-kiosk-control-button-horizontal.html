@@ -1,0 +1,174 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-control-button-horizontal">
+  <template>
+    <style>
+
+      .btn-main {
+        position: relative;
+        display: block;
+        float: left;
+        overflow: hidden;
+        height: 20vh;
+        width: 25vw;
+        padding: 1vh 2vw;
+        background-color: #fff;
+        background-image: radial-gradient(ellipse at center, #c1e4ff 0%, #7db9e8 32%, #1e5799 100%);
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        font-size: 4vh;
+        text-align: left;
+        border: 1px solid #1E5799;
+        border-radius: 1vw;
+        box-shadow: 0px 24px 26px -5px rgba(50, 50, 50, 0.45);
+      }
+      /*.btn-main:nth-last-child(1) {
+        margin-right: 0;
+      }*/
+      .btn-main .text-area, .btn-main .image-area {
+        float: left;
+      }
+      .btn-main .text-area {
+        height: 100%;
+        width: 70%;
+      }
+      .btn-main .text-area span {
+        margin-bottom: 10px;
+        font-size: 4vh;
+        font-weight: 900;
+        color: white;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 2px rgba(150, 150, 150, 0.59);
+      }
+      .btn-main .text-area .secondary-text {
+        display: inherit;
+        font-size: 3vh;
+        font-weight: 600;
+        color: #003470;
+        text-transform: none;
+      }
+      .btn-main .image-area {
+        position: absolute;
+        right: 1vw;
+        bottom: 1vw;
+        height: 8vw;
+        width: 8vw;
+        max-height: 135px;
+        max-width: 135px;
+        background-color: #213159;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 50%;
+      }
+      .btn-highlighted {
+        /*animation: border-transition 2s ease-in-out infinite;
+        border: 6px solid #61f04b;*/
+        box-shadow: 0px 0px 15px 5px #61f04b;
+      }
+
+      .btn-disabled {
+        box-shadow: inset 0px 0px 15px 5px darkslategray;
+        background-image: radial-gradient(ellipse at center, lightgray 0%, dimgray 100%);
+      }
+
+      /*@keyframes border-transition {
+        0% {
+          box-shadow: 0px 3px 45px -5px #61f04b;
+        }
+        50% {
+          box-shadow: 0px 3px 45px 15px #61f04b;
+        }
+        100% {
+          box-shadow: 0px 3px 45px -5px #61f04b;
+        }
+      }*/
+
+      /* List of inset images supported by dox-kiosk-control-button-horizontal -- START */
+
+      .default {
+        background-image: url("../../images/dox-kiosk-images/wireless.svg");
+        background-size: 50%;
+      }
+      .buy {
+        background-image: url("../../images/dox-kiosk-images/buy-2-512.png");
+        background-size: 50%;
+      }
+      .pickup {
+        background-image: url("../../images/dox-kiosk-images/lg_g5.png");
+        background-size: 30%;
+      }
+      .pickup-default {
+        background-image: url("../../images/dox-kiosk-images/package-512.png");
+        background-size: 60%;
+      }
+      .account {
+        background-image: url("../../images/dox-kiosk-images/powerpoint-512.png");
+        background-size: 50%;
+      }
+      .checkout {
+        background-image: url("../../images/dox-kiosk-images/checkout-enabled.png");
+        background-size: 50%;
+      }
+      .checkout-disabled {
+        background-image: url("../../images/dox-kiosk-images/checkout-disabled.png");
+        background-size: 50%;
+      }
+      .billing {
+        background-image: url("../../images/dox-kiosk-images/bill-512.png");
+        background-size: 50%;
+      }
+      .usage {
+        background-image: url("../../images/dox-kiosk-images/bar-chart-6-512.png");
+        background-size: 50%;
+      }
+
+      /* List of inset images supported by dox-kiosk-control-button-horizontal -- END */
+
+    </style>
+
+    <div class$="btn-main {{highlightClass}}" style="cursor: pointer;">
+        <div class="text-area">
+            <span>{{primaryText}}</span>
+            <span class="secondary-text">{{secondaryText}}</span>
+        </div>
+        <div class$="image-area {{insetImage}}"></div>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-control-button-horizontal',
+
+        hostAttributes: {
+          'primary-text': null,
+          'secondary-text': null,
+          'inset-image': 'default',
+          'highlight': 'false'
+        },
+
+        properties: {
+          highlightClass: {
+            type: String,
+            computed: '_highlight(highlight)'
+          },
+        },
+
+        _highlight: function(highlight) {
+          if (highlight === 'true') {
+            return 'btn-highlighted';
+          } else if (highlight === 'disable') {
+            return 'btn-disabled';
+          } else {
+            return null;
+          }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

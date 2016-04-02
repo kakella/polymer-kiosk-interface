@@ -1,0 +1,150 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-footer-shoppingcart">
+  <template>
+
+    <style>
+      :host {
+        position: absolute;
+        top: 70vh;
+        height: 25vh;
+        width: 96vw;
+        margin: 0 2vw 2.5vh;
+        padding-top: 2.5vh;
+      }
+      .flex-equal-around-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+      div {
+        height: 100%;
+      }
+      .dox-kiosk-control-carousel {
+        padding: 0 2vw;
+        width: calc(0.65*96vw - 4vw);
+      }
+      .dox-kiosk-control-carousel {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      dox-kiosk-control-button-horizontal {
+        margin-left: 5vw;
+      }
+      .remove-from-cart {
+        width: 4vw;
+        height: 4vw;
+        background-image: url('../../images/dox-kiosk-images/Remove_red.svg');
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+      }
+      .remove-button1 {
+        left: 11vw;
+        top: 3vh;
+      }
+      .remove-button2 {
+        left: 26vw;
+        top: 3vh;
+      }
+      .remove-button3 {
+        left: 41vw;
+        top: 3vh;
+      }
+      .remove-button4 {
+        left: 56vw;
+        top: 3vh;
+      }
+    </style>
+
+    <div class="flex-equal-around-justified">
+      <div class="dox-kiosk-control-carousel">
+        <content select=".img-carousel"></content>
+      </div>
+      <dox-kiosk-control-button-horizontal
+        id="checkout-button"
+        primary-text="Checkout"
+        secondary-text="{{itemCount}} item(s) in cart"
+        inset-image="{{shoppingCartImage}}"
+        highlight="{{highlightValue}}"
+        onclick="page(app.baseUrl+'choose-payment-method');">
+      </dox-kiosk-control-button-horizontal>
+    </div>
+
+    <div class="remove-from-cart remove-button1" hidden$="{{hideRemoveButton1}}" onclick="app.removeFromShoppingCart(0);"></div>
+    <div class="remove-from-cart remove-button2" hidden$="{{hideRemoveButton2}}" onclick="app.removeFromShoppingCart(1);" ></div>
+    <div class="remove-from-cart remove-button3" hidden$="{{hideRemoveButton3}}" onclick="app.removeFromShoppingCart(2);" ></div>
+    <div class="remove-from-cart remove-button4" hidden$="{{hideRemoveButton4}}" onclick="app.removeFromShoppingCart(3);" ></div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-footer-shoppingcart',
+
+        properties: {
+          highlightCheckout: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+            observer: 'toggleHighlightCheckout',
+            value: null
+          },
+
+          highlightValue: {
+            type: String,
+            notify: true
+          },
+
+          itemCount: {
+            type: Number,
+            reflectToAttribute: true,
+            notify: true,
+            value: 0
+          },
+
+          hideRemoveButton1: {
+            type: Boolean,
+            reflectToAttribute: true,
+            notify: true,
+            value: true
+          },
+          hideRemoveButton2: {
+            type: Boolean,
+            reflectToAttribute: true,
+            notify: true,
+            value: true
+          },
+          hideRemoveButton3: {
+            type: Boolean,
+            reflectToAttribute: true,
+            notify: true,
+            value: true
+          },
+          hideRemoveButton4: {
+            type: Boolean,
+            reflectToAttribute: true,
+            notify: true,
+            value: true
+          },
+
+          shoppingCartImage: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+            value: 'checkout-disabled'
+          }
+        },
+
+        toggleHighlightCheckout: function(newValue, oldValue) {
+          this.highlightValue = newValue;
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

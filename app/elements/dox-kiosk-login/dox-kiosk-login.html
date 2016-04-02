@@ -1,0 +1,95 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-login">
+  <template>
+    <style>
+      :host {
+        height: 100%;
+        width: 100%;
+      }
+      div.content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      p, span, label {
+        color: white;
+        font-size: 34px;
+        font-weight: 400;
+      }
+      input {
+        font-size: 34px;
+      }
+      .btn {
+        display: inline-block;
+        height: 50px;
+        width: 140px;
+        margin: 5px 20px;
+        font-size: 1em;
+        font-weight: 400;
+        line-height: 50px;
+        text-align: center;
+        text-transform: uppercase;
+        border-radius: 10px;
+        border: none;
+      }
+      .btn-primary {
+        background-color: #f04b4c;
+        color: white;
+      }
+
+    </style>
+
+    <div class="content">
+      <form>
+        <p>Welcome {{contactName}}!</p>
+        <p><label>Enter your pin: </label>
+        <input type="password" id="pin" size=4 minlength=4 maxlength=4 pattern="[0-9]+" autofocus inputmode="numeric" required /></p>
+        <input type="submit" on-click="validatePin" class="btn btn-primary"/>
+      </form>
+    </div>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'dox-kiosk-login',
+
+    hostAttributes: {
+      'contact-name': null,
+      'action-href': null
+    },
+
+    properties: {
+      logins: {
+        type: Object,
+        notify: false,
+        value: function() { return {
+            'Ilan': '1234',
+            'Yogen': '5678'
+          }
+        }
+      }
+    },
+
+    showToast: function() {
+      app.$.toast.text = 'Invalid pin, try again :)';
+      app.$.toast.show();
+    },
+
+    validatePin: function(event) {
+      event.preventDefault();
+      if (this.$.pin.value !== this.logins[this.contactName]) {
+        this.$.pin.value = null;
+        this.showToast();
+      } else {
+        this.$.pin.value = null;
+        page(this.actionHref);
+      }
+    }
+
+  });
+</script>

@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-sidebar-fullheight">
+  <template>
+
+    <style>
+      :host {
+        position: relative;
+        left: calc(0.67*(100% - 4vw));
+        top: 5vh;
+      }
+      .sidebar-content {
+        margin: 2.5vh 2vw;
+        width: calc(0.33*(100% - 4vw));
+        height: calc(100%-2vh);
+        border-radius: 10px;
+        background-color: #E6EFF2;
+        color: #213159;
+        font-weight: 900;
+        font-size: 2em;
+        text-align: center;
+      }
+    </style>
+
+    <div class="sidebar-content">
+      <content></content>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-sidebar-fullheight'
+      });
+    })();
+  </script>
+</dom-module>

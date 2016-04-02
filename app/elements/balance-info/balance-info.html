@@ -1,0 +1,72 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<dom-module id="balance-info">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      span,
+      input {
+        @apply(--paper-font-body2);
+      }
+    </style>
+
+    <h3>Your total balance is <strong><span style="color: red; font-size: 20px">{{billBalance.balance}}</span></strong></h3>
+    <span>Due by {{billBalance.dueDate}} ({{daysRemainingString}})</span>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'balance-info',
+
+        properties: {
+          billBalance: {
+            type: Object,
+            notify: false,
+            value: function() { return {
+                'balance': 99.56,
+                'dueDate': new Date('February 29, 2016 23:59:59')
+              };
+            }
+          },
+
+          daysRemainingString: {
+            type: String,
+            computed: 'daysRemainingToPay(billBalance.dueDate, currentDate)'
+          },
+
+          currentDate: {
+            type: Date,
+            notify: true,
+            value: Date.now()
+          }
+        },
+
+        daysRemainingToPay: function(dueDate, currentDate) {
+          var today = currentDate + 24*60*60*1000;
+          var due = Date.parse(dueDate);
+
+          var milliseconds = Math.abs(due-today);
+          var seconds = Math.floor(milliseconds/1000);
+          var minutes = Math.floor(seconds/60);
+          var hours = Math.floor(minutes/60);
+          var days = Math.floor(hours/24);
+
+          var returnString = days+' days, '+(hours-days*24)+' hours'/* +(minutes-hours*60)+':'+(seconds-minutes*60)*/;
+
+          if (days < 0) {
+            return 'overdue ' + returnString;
+          } else {
+            return returnString + ' left';
+          }
+        }
+      });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,65 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-landing-panel-special">
+  <template>
+    <style>
+      :host {
+        height: 100%;
+        width: 100%;
+      }
+      div.content {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      div.top-half {
+        position: absolute;
+        height: 50%;
+        width: 100%;
+      }
+      div.bottom-half {
+        position: absolute;
+        height: 50%;
+        width: 100%;
+        top: 50%;
+      }
+      a {
+        text-decoration: none;
+        position: relative;
+        display: inline-block;
+        height: 50%;
+        width: inherit;
+      }
+      span {
+        color: white;
+        font-size: 34px;
+        font-weight: 400;
+      }
+    </style>
+
+    <div class="content">
+      <span><content></content></span>
+    </div>
+    <div class="top-half">
+      <a href$="{{touchActionTopHref}}" />
+    </div>
+    <div class="bottom-half">
+      <a href$="{{touchActionBottomHref}}" />
+    </div>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'dox-kiosk-landing-panel-special',
+
+    hostAttributes: {
+      'touch-action-top-href': null,
+      'touch-action-bottom-href': null
+    }
+
+  });
+</script>

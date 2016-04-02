@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-footer">
+  <template>
+
+    <style>
+      :host {
+        position: absolute;
+        top: 70vh;
+        height: 30vh;
+        width: 100vw;
+        padding: 3vh 0 2vh 0;
+      }
+      .flex-equal-around-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-around-justified);
+      }
+    </style>
+
+    <div class="flex-equal-around-justified">
+      <dox-kiosk-control-button-horizontal id="buy-button" primary-text="Buy" secondary-text="Browse devices, accessories, and plans" inset-image="buy" highlight="{{highlight-buy}}" onclick="page(app.baseUrl+'buy-hardgoods');"></dox-kiosk-control-button-horizontal>
+      <dox-kiosk-control-button-horizontal id="pickup-button" primary-text="Pickup" secondary-text="You have 1 device ready for pickup" inset-image="{{pickupImage}}" highlight="{{highlight-pickup}}" onclick="page(app.baseUrl+'pickup');"></dox-kiosk-control-button-horizontal>
+      <dox-kiosk-control-button-horizontal id="account-button" primary-text="Account" secondary-text="View accounts and balances" inset-image="account" highlight="{{highlight-account}}" onclick="page(app.baseUrl+'usage-screen');"></dox-kiosk-control-button-horizontal>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-footer',
+
+        hostAttributes: {
+          'highlight-buy': null,
+          'highlight-pickup': null,
+          'highlight-account': null,
+          'pickup-image': 'pickup'
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

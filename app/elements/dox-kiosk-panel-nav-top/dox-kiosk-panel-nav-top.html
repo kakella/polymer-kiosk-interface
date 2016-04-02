@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-nav-top">
+  <template>
+
+    <style>
+      :host {
+        height: 5vh;
+      }
+      .flex-vertical-center {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+    </style>
+
+    <div class="flex-vertical-center">
+      <dox-kiosk-control-button-nav button-type="home" onclick="page(app.baseUrl+'landing-screen');"></dox-kiosk-control-button-nav>
+      <dox-kiosk-control-button-nav button-type="live-support" on-click="toggleLiveChat"></dox-kiosk-control-button-nav>
+      <dox-kiosk-control-button-nav button-type="logout" onclick="page(app.baseUrl); app.initApp();"></dox-kiosk-control-button-nav>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-nav-top',
+
+        toggleLiveChat: function() {
+            if (app.hideLiveChat) {
+              app.hideLiveChat = false;
+            } else {
+              app.hideLiveChat = true;
+            }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

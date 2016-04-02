@@ -1,0 +1,206 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-control-carousel">
+  <template>
+    <style>
+
+      .carousel-container {
+        width: 100%;
+        height: 25vh;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .left-arrow {
+        width: 2vw;
+        height: 25vh;
+        background-image: url('../../images/dox-kiosk-images/arrow_left.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+      }
+
+      .right-arrow {
+        width: 2vw;
+        height: 25vh;
+        background-image: url('../../images/dox-kiosk-images/arrow_right.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+      }
+
+      .slider-carousel {
+        width: calc(100% - 4vw);
+        height: 25vh;
+        text-align: center;
+      }
+
+      .my-overflow-carousel {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .slides-carousel {
+        height: 100%;
+      }
+
+      .slides-carousel .inner {
+        width: 200%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      .slides-carousel .inner {
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+
+        -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+        -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+      }
+
+      .slides-carousel ::content .img-carousel {
+        width: 24%;
+        height: 25vh;
+        float: left;
+        padding: 0 0.5%;
+      }
+
+      .slide1-carousel:checked ~ .slides-carousel .inner {
+        margin-left: 0;
+      }
+
+      .slide2-carousel:checked ~ .slides-carousel .inner {
+        margin-left: -100%;
+      }
+
+      /*.slide3-carousel:checked ~ .slides-carousel .inner {
+        margin-left: -200%;
+      }
+
+      .slide4-carousel:checked ~ .slides-carousel .inner {
+        margin-left: -300%;
+      }*/
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      label {
+        background: #CCC;
+        display: inline-block;
+        cursor: pointer;
+        width: 1vw;
+        height: 1vw;
+        border-radius: 0.5vw;
+      }
+
+      .slide1-carousel:checked ~ label[for="slide1-carousel"],
+      .slide2-carousel:checked ~ label[for="slide2-carousel"],
+      /*.slide3-carousel:checked ~ label[for="slide3-carousel"],
+      .slide4-carousel:checked ~ label[for="slide4-carousel"] */
+      {
+        background: #333;
+      }
+
+    </style>
+
+    <div class="carousel-container">
+      <div class="left-arrow" on-click="previousImage"></div>
+      <div class="slider-carousel">
+        <input checked type="radio" name="slider" class="slide1-carousel">
+        <input type="radio" name="slider" class="slide2-carousel">
+        <!-- <input type="radio" name="slider" class="slide3-carousel">
+        <input type="radio" name="slider" class="slide4-carousel"> -->
+        <div class="slides-carousel">
+          <div class="my-overflow-carousel">
+            <div class="inner">
+              <content select=".img-carousel"></content>
+            </div> <!-- .inner -->
+          </div> <!-- #overflow -->
+        </div>
+        <!-- <label for="slide1-carousel"></label>
+        <label for="slide2-carousel"></label>
+        <label for="slide3-carousel"></label>
+        <label for="slide4-carousel"></label> -->
+      </div>
+      <div class="right-arrow" on-click="nextImage"></div>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-control-carousel',
+
+        properties: {
+          slideNumber: {
+            type: Number,
+            value: 0,
+            notify: true
+          },
+          slideCount: {
+            type: Number,
+            value: 4,
+            notify: true
+          }
+        },
+
+        resetSliderImage: function() {
+          //console.log('carousel:resetSliderImage:' + this.slideNumber);
+          var slideId = '.slide' + (this.slideNumber+1) + '-carousel';
+          this.$$(slideId).removeAttribute('checked');
+        },
+
+        setSliderImage: function() {
+          //console.log('carousel:setSliderImage:' + this.slideNumber);
+          var slideId = '.slide' + (this.slideNumber+1) + '-carousel';
+          this.$$(slideId).setAttribute('checked', 'true');
+        },
+
+        previousImage: function() {
+          this.resetSliderImage();
+          if (this.slideNumber == 0) {
+            this.slideNumber = Math.floor(this.slideCount/2)-1;
+          } else {
+            this.slideNumber--;
+          }
+          this.setSliderImage();
+        },
+
+        nextImage: function() {
+          this.resetSliderImage();
+          if (this.slideNumber == Math.floor(this.slideCount/2)-1) {
+            this.slideNumber = 0;
+          } else {
+            this.slideNumber++;
+          }
+          this.setSliderImage();
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

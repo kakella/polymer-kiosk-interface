@@ -1,0 +1,98 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="billing-details">
+  <template>
+    <style>
+
+      .flex-equal-around-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+      }
+
+      h3 {
+        margin-top: 0;
+      }
+
+      h4 {
+        margin: 0;
+        font-size: 2vw;
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        -webkit-margin-start: 0;
+        -webkit-margin-end: 0;
+      }
+
+      span {
+        font-size: 2vh;
+      }
+
+      google-chart {
+        /*width: 30vw;*/
+        height: 200px;
+      }
+
+    </style>
+
+    <h3>Billing Overview</h3>
+    <div class="flex-equal-around-justified">
+      <div>
+        <div class="flex-equal-around-justified">
+          <div>
+            <h4>$264.00</h4>
+            <span style="color: gray">Due in 11 days</span>
+          </div>
+          <div style="width: 5vw"></div>
+          <div>
+            <h4 style="color: red">+$10.00</h4>
+            <span style="color: gray">vs. Last Bill</span>
+          </div>
+        </div>
+        <div>
+          <br/>
+          <h4 style="color: red; text-align: left;">Cause of variance</h4>
+          <span>Roaming charge occurred on 3/1/2016 + $10</span>
+        </div>
+      </div>
+      <div>
+        <google-chart
+          type='column'
+          options='{
+            "title": "Billing amount ($) in past 6 months",
+            "backgroundColor": "none",
+            "legend": "none"
+          }'
+          data='{{billingDetailsHistorical}}'>
+        </google-chart>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'billing-details',
+
+        properties: {
+          billingDetailsHistorical: {
+            type: Array,
+            notify: true,
+            value: function() { return [
+                ["Month", "Usage"],
+                ["10/15", 160],
+                ["11/15", 145],
+                ["12/15", 180],
+                ["01/16", 220],
+                ["02/16", 254],
+                ["03/16", 264],
+              ];
+            }
+          },
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-panel-maincontent-fullwidth">
+  <template>
+
+    <style>
+      div {
+        height: 60vh;
+        padding: 2.5vh 2vw;
+        width: calc(100% - 4vw);
+        overflow: hidden;
+      }
+    </style>
+
+    <div class="content">
+      <content></content>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-panel-maincontent-fullwidth'
+      });
+    })();
+  </script>
+</dom-module>

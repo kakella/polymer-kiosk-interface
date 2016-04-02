@@ -1,0 +1,264 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="dox-kiosk-control-slider">
+  <template>
+    <style>
+
+      .slider-container {
+        width: 100%;
+        height: 60vh;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .left-arrow {
+        width: 2vw;
+        height: 60vh;
+        /*float: left;*/
+        background-image: url('../../images/dox-kiosk-images/arrow_left.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+      }
+
+      .right-arrow {
+        width: 2vw;
+        height: 60vh;
+        /*float: right;*/
+        background-image: url('../../images/dox-kiosk-images/arrow_right.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+      }
+
+      .add-to-cart {
+        width: 4vw;
+        height: 4vw;
+        background-image: url('../../images/dox-kiosk-images/cart_add.png');
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: absolute;
+        left: 58vw;
+        top: 9.5vh;
+      }
+
+      .slider {
+        width: calc(100% - 4vw);
+        height: 60vh;
+        text-align: center;
+      }
+
+      .my-overflow {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .slides {
+        height: 100%;
+      }
+
+      .slides .inner {
+        width: 400%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      .slides .inner {
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+
+        -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+        -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+        transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+      }
+
+      .slides ::content .img-slider {
+        width: 25%;
+        height: 60vh;
+        float: left;
+      }
+
+      .slide1:checked ~ .slides .inner {
+        margin-left: 0;
+      }
+
+      .slide2:checked ~ .slides .inner {
+        margin-left: -100%;
+      }
+
+      .slide3:checked ~ .slides .inner {
+        margin-left: -200%;
+      }
+
+      .slide4:checked ~ .slides .inner {
+        margin-left: -300%;
+      }
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      label {
+        background: #CCC;
+        display: inline-block;
+        cursor: pointer;
+        width: 1vw;
+        height: 1vw;
+        border-radius: 0.5vw;
+      }
+
+      .slide1:checked ~ label[for="slide1"],
+      .slide2:checked ~ label[for="slide2"],
+      .slide3:checked ~ label[for="slide3"],
+      .slide4:checked ~ label[for="slide4"] {
+        background: #333;
+      }
+
+    </style>
+
+
+    <div class="slider-container">
+      <div class="left-arrow" on-click="previousImage"></div>
+      <div class="slider">
+        <input checked type="radio" name="slider" class="slide1">
+        <input type="radio" name="slider" class="slide2">
+        <input type="radio" name="slider" class="slide3">
+        <input type="radio" name="slider" class="slide4">
+        <div class="slides">
+          <div class="my-overflow">
+            <div class="inner">
+              <content select=".img-slider"></content>
+            </div> <!-- .inner -->
+          </div> <!-- .my-overflow -->
+        </div>
+        <!-- <label for="slide1"></label>
+        <label for="slide2"></label>
+        <label for="slide3"></label>
+        <label for="slide4"></label> -->
+      </div>
+      <div class="right-arrow" on-click="nextImage"></div>
+      <div hidden$="{{hideAddToCart}}" class="add-to-cart" onclick$="app.addToShoppingCart({{slideNumber}});" ></div>
+    </div>
+
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'dox-kiosk-control-slider',
+
+        properties: {
+          slideNumber: {
+            type: Number,
+            value: 0,
+            notify: true
+          },
+          asyncHandle: {
+            type: Number
+          },
+          slideTimer: {
+            type: Number,
+            value: 3000
+          },
+          hideAddToCart: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            notify: true
+          },
+          slideId: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+            value: null
+          }
+        },
+
+        ready: function() {
+          if (this.slideId === 'marketing') {
+            this.asyncHandle = this.async(this.nextImage, this.slideTimer);
+          }
+        },
+
+        resetSliderImage: function() {
+          var slideId = '.slide' + (this.slideNumber+1);
+          this.$$(slideId).removeAttribute('checked');
+
+          if (this.slideId !== 'marketing') {
+            app['hideProduct'+(this.slideNumber+1)] = true;
+          }
+        },
+
+        setSliderImage: function() {
+          var slideId = '.slide' + (this.slideNumber+1);
+          this.$$(slideId).setAttribute('checked', 'true');
+
+          if (this.slideId !== 'marketing') {
+            app['hideProduct'+(this.slideNumber+1)] = false;
+          }
+        },
+
+        previousImage: function() {
+          if (this.slideId === 'marketing') {
+            this.cancelAsync(this.asyncHandle);
+          }
+          
+          this.resetSliderImage();
+          if (this.slideNumber == 0) {
+            this.slideNumber = 3;
+          } else {
+            this.slideNumber--;
+          }
+          this.setSliderImage();
+
+          if (this.slideId === 'marketing') {
+            this.asyncHandle = this.async(this.nextImage, this.slideTimer);
+          }
+        },
+
+        nextImage: function() {
+          if (this.slideId === 'marketing') {
+            this.cancelAsync(this.asyncHandle);
+          }
+
+          this.resetSliderImage();
+          if (this.slideNumber == 3) {
+            this.slideNumber = 0;
+          } else {
+            this.slideNumber++;
+          }
+          this.setSliderImage();
+
+          if (this.slideId === 'marketing') {
+            this.asyncHandle = this.async(this.nextImage, this.slideTimer);
+          }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

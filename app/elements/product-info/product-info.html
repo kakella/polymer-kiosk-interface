@@ -1,0 +1,145 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<dom-module id="product-info">
+  <template>
+    <style include="shared-styles">
+    /* --- Billing Overview --- */
+.billing-container {
+text-align: left;
+font-size: 9px;
+}
+.billing-container .left-panel, .billing-container .right-panel {
+width: 50%;
+float: left;
+}
+.billing-container h1 {
+color: #213159;
+font-weight: 900;
+font-size: 2.4em;
+margin: 10px 0;
+}
+.billing-container p {
+color: black;
+margin: 10px 0;
+font-size: 1.2em;
+font-weight: normal;
+}
+.billing-container .red {
+color: #f04b4c;
+}
+.billing-container .blue {
+color: #3d6098;
+margin-bottom: 20px;
+margin-top: 20px;
+}
+.billing-container .gray {
+color: gray;
+padding-left: 10px;
+font-size: 1em;
+margin: 0;
+}
+.billing-container h4 {
+font-size: 1.6em;
+margin: 5px 0;
+}
+.billing-container h3 {
+font-size: 1.2em;
+color: gray;
+margin: 0;
+}
+.billing-container .bill-balance, .billing-container .bill-variance {
+width: 50%;
+float: left;
+}
+.billing-container .bill-variance {
+text-align: right;
+padding: 0 20px;
+}
+.billing-container .bill-image {
+height: 150px;
+width: calc(100% - 20px);
+background-color: #3d6098;
+float: left;
+margin-top: 20px;
+margin-right: 20px;
+margin-bottom: 25px;
+text-align: center;
+line-height: 150px;
+}
+
+    </style>
+
+    <div class="billing-container">
+      <h1>{{productName}}</h1>
+      <h4>{{productCaption}}</h4>
+      <br/>
+      <h4>KEY FEATURES</h4>
+      <p>{{productFeatures}}</p>
+      <br/>
+      <h4>BASIC SPECIFICATIONS</h4>
+      <p>{{productBasicSpecification}}</p>
+      <br/>
+      <h4>PRODUCT SPECIFICATION</h4>
+      <p>{{productSpecificationLine1}}</p>
+      <p>{{productSpecificationLine2}}</p>
+      <p>{{productSpecificationLine3}}</p>
+      <p>{{productSpecificationLine4}}</p>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'product-info',
+
+        properties: {
+          productName: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productCaption: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productFeatures: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productBasicSpecification: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productSpecificationLine1: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productSpecificationLine2: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productSpecificationLine3: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          productSpecificationLine4: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          }
+        },
+
+      });
+    })();
+  </script>
+</dom-module>

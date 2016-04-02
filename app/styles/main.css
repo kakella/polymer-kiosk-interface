@@ -1,0 +1,133 @@
+/*
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Lato", san-serif;
+  font-size: 15px;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(ellipse at center, #3d6098 40%, #213159 100%);
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  /* margin: 4% auto 6%; */
+}
+
+iron-pages, section {
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: 900;
+  color: #e7e7e7;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: 600;
+  color: #e7e7e7;
+}
+
+.overlay-text {
+  position: absolute;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.img-slider {
+  border-radius: 10px;
+}
+
+.full-width-content {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background-color: none;
+  color: #213159;
+  font-weight: 900;
+  font-size: 2em;
+  text-align: center;
+}
+
+.img-carousel {
+  width: 23%;
+}
+
+.partial-width-content {
+  width: 65%;
+  height: 100%;
+  border-radius: 10px;
+  background-color: none;
+  color: #213159;
+  font-weight: 900;
+  font-size: 2em;
+  text-align: center;
+  float: left;
+}
+
+.white-background {
+  background-color: #e7e7e7;
+}
+
+.sidebar-content {
+  width: 33%;
+  height: 100%;
+  border-radius: 10px;
+  background-color: none;
+  color: #213159;
+  font-weight: 900;
+  font-size: 2em;
+  text-align: center;
+  float: right;
+}
+
+video {
+  margin-top: 3vh;
+  width: 30vw;
+  height: 40vh;
+  border-radius: 10px;
+}
+
+.btn {
+  display: inline-block;
+  height: 50px;
+  width: 140px;
+  margin: 5px 20px;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: none;
+}
+.btn-primary {
+  background-color: #f04b4c;
+  color: white;
+}
+.btn-secondary {
+  background-color: #e7e7e7;
+  color: black;
+}
+
+.plan-options-images {
+  width: 16vw;
+}

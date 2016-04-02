@@ -1,0 +1,234 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
+
+<dom-module id="usage-details">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      h3 {
+        margin-top: 0;
+      }
+
+      h4 {
+        margin: 0;
+        font-size: 2vw;
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        -webkit-margin-start: 0;
+        -webkit-margin-end: 0;
+      }
+
+      span {
+        font-size: 2vh;
+      }
+      paper-progress.unlimited{
+        --paper-progress-active-color: blue;
+        width: 100%;
+      }
+      paper-progress.limited{
+        --paper-progress-container-color: darkgray;
+        width: 100%;
+      }
+
+      google-chart {
+        /*width: 20vw;*/
+        height: 200px;
+      }
+
+      .flex-equal-around-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+      }
+
+      .margin-at-bottom {
+        /*margin-bottom: 2vh;*/
+      }
+
+    </style>
+
+    <h3>{{planDetails.planName}}</h3>
+    <div style="width: 100%" class="flex-equal-around-justified">
+      <div>
+        <div class="flex-equal-around-justified margin-at-bottom">
+          <div>
+            <h4>Talk: </h4><span>{{usageDetails.talkUsage}} minutes of {{planDetails.talkAllowance}}</span>
+            <paper-progress class="unlimited" min=0 max={{usageDetails.talkUsage}} value={{usageDetails.talkUsage}}></paper-progress>
+          </div>
+          <div style="width: 4vw"></div>
+          <div>
+            <h4>Text: </h4><span>{{usageDetails.textUsage}} messages of {{planDetails.textAllowance}}</span>
+            <paper-progress class="unlimited" min=0 max={{usageDetails.textUsage}} value={{usageDetails.textUsage}}></paper-progress>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="flex-equal-around-justified margin-at-bottom">
+          <div>
+            <h4>Billing Cycle: </h4><span>{{billingCycleDaysLeftString}}</span>
+            <paper-progress class="limited" min=0 max=31 value={{billingCycleDaysLeftProgressBar}}></paper-progress>
+          </div>
+          <div>
+            <h4>Data Usage: </h4><span>{{dataAllowanceRemainingString}}</span>
+            <paper-progress class="limited" min=0 max={{planDetails.dataAllowance}} value={{dataAllowanceRemainingProgressBar}}></paper-progress>
+          </div>
+        </div>
+      </div>
+      <div class="flex-equal-around-justified">
+        <google-chart
+          type='column'
+          options='{
+            "title": "Data Usage (GB) in past 6 months",
+            "backgroundColor": "none",
+            "legend": "none"
+          }'
+          data='{{dataUsageDetailsHistorical}}'>
+        </google-chart>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'usage-details',
+
+        redrawChart: function() {
+          var chart = document.getElementsByTagName("google-chart");
+          chart.draw();
+        },
+
+        properties: {
+          planDetails: {
+            type: Object,
+            notify: true,
+            value: function() { return {
+                'planId': 1,
+                'planName': 'Mobile 5 GB Plan Rollover',
+                'talkAllowance': 'unlimited',
+                'textAllowance': 'unlimited',
+                'dataAllowance': 5000,  /*in MB*/
+                'additionalMessages': {
+                  'dataMessage': ' - including rollover data'
+                }
+              };
+            }
+          },
+
+          billingDetails: {
+            type: Object,
+            notify: true,
+            value: function() { return {
+                'billingCycle': 10,
+                'billCycleStart': 12,
+                'billCycleEnd': 11
+              }
+            }
+          },
+
+          usageDetails: {
+            type: Object,
+            notify: true,
+            value: function() { return {
+                'talkUsage': 500, /*in minutes*/
+                'textUsage': 25, /*in no. of sms's*/
+                'dataUsage': 4300  /*in MB*/
+              }
+            }
+          },
+
+          dataUsageDetailsHistorical: {
+            type: Array,
+            notify: true,
+            value: function() { return [
+                ["Month", "Usage"],
+                ["10/15", 3.81],
+                ["11/15", 3.72],
+                ["12/15", 3.93],
+                ["01/16", 4.03],
+                ["02/16", 4.12],
+                ["03/16", 4.30],
+              ];
+            }
+          },
+
+          billingCycleDaysLeftProgressBar: {
+            type: Number,
+            computed: 'calculateBillingDaysProgressBar(billingDetails)'
+          },
+
+          billingCycleDaysLeftString: {
+            type: String,
+            computed: 'getBillingDaysLeftString(billingDetails)'
+          },
+
+          dataAllowanceRemainingProgressBar: {
+            type: Number,
+            computed: 'calculateDataAllowanceProgressBar(planDetails.dataAllowance, usageDetails.dataUsage)'
+          },
+
+          dataAllowanceRemainingString: {
+            type: String,
+            computed: 'getDataAllowanceRemainingString(planDetails.dataAllowance, usageDetails.dataUsage)'
+          }
+        },
+
+        daysInMonthUsingYearAndMonth: function(year, month) {
+          var tempDate = new Date(year, month, 0);
+          return tempDate.getDate();
+        },
+
+        daysInMonthUsingDate: function(date) {
+          var year = date.getYear();
+          var month = date.getMonth() + 1;
+          return this.daysInMonthUsingYearAndMonth(year, month);
+        },
+
+        calculateBillingDaysLeft: function(billingDetails) {
+          var today = new Date();
+          var todayDay = today.getDate();
+          var todayMonth = today.getMonth()+1;
+          var todayYear = today.getYear();
+
+          if (billingDetails.billCycleEnd > todayDay) {
+            return Math.abs(todayDay-billingDetails.billCycleEnd);
+          } else {
+            return this.daysInMonthUsingDate(today) - todayDay + billingDetails.billCycleEnd;
+          }
+        },
+
+        getBillingDaysLeftString: function(billingDetails) {
+          return this.calculateBillingDaysLeft(billingDetails) + ' days left';
+        },
+
+        calculateBillingDaysProgressBar: function(billingDetails) {
+          var today = new Date();
+          return this.daysInMonthUsingDate(today) - this.calculateBillingDaysLeft(billingDetails);
+        },
+
+        calculateDataAllowanceProgressBar: function(allowance, usage) {
+          if (allowance > usage) {
+            return usage;
+          } else {
+            return allowance;
+          }
+        },
+
+        getDataAllowanceRemainingString: function(allowance, usage) {
+          if (allowance > usage) {
+            return (allowance-usage) + ' MB left';
+          } else {
+            return 'Data allowance used up';
+          }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

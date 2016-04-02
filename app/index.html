@@ -1,0 +1,289 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Experience Now Kiosk">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,900,700italic,400italic,300italic' rel='stylesheet' type='text/css'>
+  <title>Experience Now Kiosk</title>
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="elements/elements.html">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+
+  <!-- blah build:js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+  <!-- blah endbuild-->
+
+</head>
+
+<body unresolved> <!-- onload="errWrap(login);" -->
+  <div class="container">
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind" id="app">
+
+      <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+        <section data-route="home">
+          <dox-kiosk-panel-landing-special
+            touch-action-top-href="{{baseUrl}}login_ilan"
+            touch-action-bottom-href="{{baseUrl}}login_ilan">
+          </dox-kiosk-panel-landing-special>
+          <h1 class="overlay-text">Touch anywhere to begin...</h1>
+          <dox-kiosk-panel-youtube-autoplay play-video="{{playVideo}}"></dox-kiosk-panel-youtube-autoplay>
+        </section>
+
+        <section data-route="login_ilan">
+          <dox-kiosk-login contact-name="Ilan" action-href="{{baseUrl}}landing-screen"></dox-kiosk-login>
+        </section>
+
+        <section data-route="login_yogen">
+          <dox-kiosk-login contact-name="Yogen" action-href="{{baseUrl}}usage-screen"></dox-kiosk-login>
+        </section>
+
+        <section data-route="landing-screen">
+          <dox-kiosk-panel-nav-top></dox-kiosk-panel-nav-top>
+          <dox-kiosk-panel-footer
+            highlight-buy="{{highlightBuy}}"
+            highlight-pickup="{{highlightPickup}}"
+            highlight-account="{{highlightAccount}}"
+            pickup-image="{{pickupImage}}">
+          </dox-kiosk-panel-footer>
+          <dox-kiosk-panel-maincontent-fullwidth>
+            <dox-kiosk-control-slider hide-add-to-cart slide-id="marketing-no" id="marketing-slider">
+              <img class="img-slider" src="{{getMarketingImageByIndex(0)}}"/>
+              <img class="img-slider" src="{{getMarketingImageByIndex(1)}}"/>
+              <img class="img-slider" src="{{getMarketingImageByIndex(2)}}"/>
+              <img class="img-slider" src="{{getMarketingImageByIndex(3)}}"/>
+            </dox-kiosk-control-slider>
+          </dox-kiosk-panel-maincontent-fullwidth>
+        </section>
+
+        <section data-route="pickup">
+          <dox-kiosk-panel-landing-special
+            touch-action-top-href="{{baseUrl}}buy-hardgoods"
+            touch-action-bottom-href="{{baseUrl}}buy-hardgoods"
+            onclick="
+              app.setAppProperty('highlightBuy', 'true');
+              app.setAppProperty('highlightPickup', null);
+              app.setButtonText('pickup-button', 'All hard goods picked up');
+              app.pickupImage = 'pickup-default';">
+          </dox-kiosk-panel-landing-special>
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <img src="images/dox-kiosk-images/LG_G5_drawer_open.gif" />
+              <h1 style="text-transform: capitalize;">Pick up your item from drawer 12</h1>
+              <h2>Touch anywhere to continue...</h2>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="buy-hardgoods">
+          <dox-kiosk-panel-nav-top></dox-kiosk-panel-nav-top>
+          <dox-kiosk-panel-footer-shoppingcart
+            highlight-checkout="{{highlightCheckout}}"
+            item-count="{{shoppingCartItemCount}}"
+            hide-remove-button1="{{hideRemoveButton1}}"
+            hide-remove-button2="{{hideRemoveButton2}}"
+            hide-remove-button3="{{hideRemoveButton3}}"
+            hide-remove-button4="{{hideRemoveButton4}}"
+            shopping-cart-image="{{shoppingCartImage}}">
+            <img class="img-carousel" src="{{defaultShoppingCartImage}}"/>
+            <img class="img-carousel" src="{{defaultShoppingCartImage}}"/>
+            <img class="img-carousel" src="{{defaultShoppingCartImage}}"/>
+            <img class="img-carousel" src="{{defaultShoppingCartImage}}"/>
+          </dox-kiosk-panel-footer-shoppingcart>
+          <dox-kiosk-panel-maincontent-fullwidth>
+            <div class="partial-width-content">
+              <dox-kiosk-control-slider id="buy-page-slider">
+                <img class="img-slider" src="{{getHardGoodImageByIndex(0)}}"/>
+                <img class="img-slider" src="{{getHardGoodImageByIndex(1)}}"/>
+                <img class="img-slider" src="{{getHardGoodImageByIndex(2)}}"/>
+                <img class="img-slider" src="{{getHardGoodImageByIndex(3)}}"/>
+              </dox-kiosk-control-slider>
+            </div>
+            <div class="sidebar-content white-background">
+              <product-info hidden="{{hideProduct1}}"
+                product-name="LG G5 HEADPHONES"
+                product-caption="Harman Kardon® Signature Sound"
+                product-features="Retractable Earbuds with Wire Management | Stylish & Sleek Design | Jog Button"
+                product-basic-specification="Weight: 1.90 oz"
+                product-specification-line1="Bluetooth Version: 3.0"
+                product-specification-line2="Supported Bluetooth Profiles: A2DP, AVRCP, HFP, HSP"
+                product-specification-line3="Talk Time: 17 hours"
+                product-specification-line4="Standby Time: 23 days">
+              </product-info>
+              <product-info hidden="{{hideProduct2}}"
+                product-name="LG 360 VR"
+                product-caption="CAPTURE YOUR VR WORLD"
+                product-features="The 360 CAM is LG's first 360-degree camera, designed to work in conjunction with the G5. Can capture about 70 minutes of video with the 4GB internal storage"
+                product-basic-specification="Dimension - 30 x 97 x 25mm and weighs 72g"
+                product-specification-line1="Connectivity - Bluetooth or Wi-Fi"
+                product-specification-line2="Storage: 4 GB internal, Micro SD slot for expansion"
+                product-specification-line3="Battery Capacity - 1200mAh"
+                product-specification-line4="">
+              </product-info>
+              <product-info hidden="{{hideProduct3}}"
+                product-name="LG ROLLING BOT"
+                product-caption="HYBRID SECURITY SYSTEM/SMART-HOME DEVICE"
+                product-features="Communicate with people/pets inside house with mic and speakers through your phone. Has camera, infrared sensor, mic, speaker, and a laser"
+                product-basic-specification="Dimension - 6 inches in diameter"
+                product-specification-line1="Connectivity - Bluetooth or Wi-Fi"
+                product-specification-line2="Storage: 512MB of RAM"
+                product-specification-line3="Battery Capacity - 5000mAh"
+                product-specification-line4="">
+              </product-info>
+              <product-info hidden="{{hideProduct4}}"
+                product-name="LG WATCH URBANE"
+                product-caption="GENUINE SMARTPIECE"
+                product-features="Timeless aesthetics. Crafted in stainless steel with a gold or silver finish. The latest technology. Slide your finger across the screen to change watch faces."
+                product-basic-specification="1.3-inch P-OLED display"
+                product-specification-line1="Compatible with Android 4.3 or higher"
+                product-specification-line2="Bluetooth 4.0 technology with automatic sync"
+                product-specification-line3="4GB internal memory"
+                product-specification-line4="Snapdragon 400 quad core 1.2GHz works smoothly with 512MB of RAM">
+              </product-info>
+            </div>
+          </dox-kiosk-panel-maincontent-fullwidth>
+        </section>
+
+        <section data-route="choose-payment-method">
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+              <img src="images/dox-kiosk-images/apple-pay.jpg"
+                width="20%"
+                onclick="page(app.baseUrl+'make-apple-pay-payment');"
+                style="cursor: pointer; border-radius: 10px;" />
+              <img src="images/dox-kiosk-images/bill-me-later.png"
+                height="28%"
+                onclick="page(app.baseUrl+'make-account-payment');"
+                style="cursor: pointer; border-radius: 10px;" />
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="make-account-payment">
+          <dox-kiosk-panel-landing-special
+            touch-action-top-href="{{baseUrl}}payment-done"
+            touch-action-bottom-href="{{baseUrl}}payment-done">
+          </dox-kiosk-panel-landing-special>
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <h1>The amount below will be charged to your account</h1>
+              <h2>Payment amount: $125</h2>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="make-apple-pay-payment">
+          <dox-kiosk-panel-landing-special
+            touch-action-top-href="{{baseUrl}}payment-done"
+            touch-action-bottom-href="{{baseUrl}}payment-done">
+          </dox-kiosk-panel-landing-special>
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <img src="images/dox-kiosk-images/nfc.png" style="width: 20vw;"/>
+              <h2>Payment amount: $125</h2>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="payment-done">
+          <dox-kiosk-panel-landing-special
+            touch-action-top-href="{{baseUrl}}landing-screen"
+            touch-action-bottom-href="{{baseUrl}}landing-screen"
+            onclick="app.setAppProperty('highlightBuy', null); app.setAppProperty('highlightAccount', null); app.initShoppingCart();">
+          </dox-kiosk-panel-landing-special>
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <h1 style="text-transform: capitalize;">Thank you for your purchase!</h1>
+              <h2>Touch anywhere to continue...</h2>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="usage-screen">
+          <dox-kiosk-panel-nav-top></dox-kiosk-panel-nav-top>
+          <dox-kiosk-panel-usage-footer
+            billing-highlight="{{billingHighlight}}"
+            usage-highlight="{{usageHighlight}}">
+          </dox-kiosk-panel-usage-footer>
+          <dox-kiosk-panel-maincontent-fullheight>
+            <dox-kiosk-panel-maincontent-partialwidth>
+                <usage-details hidden="{{hideUsage}}"></usage-details>
+                <billing-details hidden="{{hideBilling}}"></billing-details>
+            </dox-kiosk-panel-maincontent-partialwidth>
+            <div class="sidebar-content" style="height: 96%;">
+              <h3 style="color: white; margin-top: 0; margin-bottom: 2vh;">Change Plan Options</h3>
+
+              <img class="plan-options-images" style="border-radius: 10px;" src="images/dox-kiosk-images/Recommended_Plans3.PNG" />
+              <img class="plan-options-images" style="border-radius: 10px;" src="images/dox-kiosk-images/Recommended_Plans4.PNG" />
+
+              <div id="vid-box" hidden="{{hideLiveChat}}"></div>
+
+              <script src="scripts/webrtc/webrtc.js"></script>
+              <script src="scripts/webrtc/modalEffects.js"></script>
+              <script src="scripts/webrtc/classie.js"></script>
+              <script src="scripts/webrtc/vchat.js"></script>
+            </div>
+          </dox-kiosk-panel-maincontent-fullheight>
+        </section>
+
+        <section data-route="confirm-change-plan">
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <h1>Your plan will be changed to the following:</h1>
+              <h2>New Rate Plan</h2>
+              <input type="submit" value="Confirm" class="btn btn-primary"/>
+              <input type="button" value="Cancel" class="btn btn-secondary"/>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+        <section data-route="change-plan-done">
+          <dox-kiosk-panel-center-content width="100vw" height="100vh">
+            <div>
+              <h1>Your plan was successfully changed to New Rate Plan!</h1>
+              <h2>Touch anywhere to continue...</h2>
+            </div>
+          </dox-kiosk-panel-center-content>
+        </section>
+
+      </iron-pages>
+
+      <paper-toast id="toast">
+        <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
+      </paper-toast>
+
+    </template>
+  </div>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
+
+</body>
+
+</html>
