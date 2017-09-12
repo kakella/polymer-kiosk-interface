@@ -1,3 +1,10 @@
+# Proof-Of-Concept Kiosk interface using Polymer
+This is a proof of concept interface for a Kiosk, developed using Google Polymer. This was developed for Amdocs Hackathon in 2016. What follows is just the original README from Polymer Starter Kit.
+
+
+
+
+
 ![](https://cloud.githubusercontent.com/assets/110953/7877439/6a69d03e-0590-11e5-9fac-c614246606de.png)
 ## Polymer Starter Kit
 
